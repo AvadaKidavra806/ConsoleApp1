@@ -146,7 +146,14 @@ namespace ConsoleApp1
                 }
             }
             //======================
-            void EdinReshenStr(int indstr)
+            void VuvodVKonechnoeZnach(int indstr, int indstolb, int chislo)
+            {
+                Console.WriteLine("Конечное значение: " + (indstr + 1) + " " + (indstolb + 1) + " " + chislo);
+                Prognozu[indstr, indstolb] = new List<int> { chislo };
+                Udalenie(indstr, indstolb, chislo);
+
+            }
+            void EdinReshenStr(int indstr) //ни к селу ни к городу 
             {
                 var jkfg = new List<List<int>>[9];
                 for (int i = 0; i < Razryd; i++)
@@ -156,12 +163,13 @@ namespace ConsoleApp1
             }
             void SostoynieStr(int indstr)
             {
+                Console.WriteLine("Состояние стр");
                 var Vremynka = new int[Razryd, Razryd];
-                for (int i = 0; i < Razryd; i++)
-                {
+                for (int i = 0; i < Razryd; i++) // i цифра прогноза
+                { 
                     if (Prognozu[indstr, i].Count != 1)
                     {
-                        for (int j = 0; j < Razryd; j++)
+                        for (int j = 0; j < Razryd; j++) //j индекс столбца
                         {
                             if (Prognozu[indstr, i].Any(k => k == j + 1))
                             {
@@ -170,17 +178,78 @@ namespace ConsoleApp1
                         }
                     }
                 }
-                for (int i = 0; i < Razryd; i++)
+                //номер строчки - номер столбца
+                //count - кол-во прогнозов в ячейке
+
+                //==================
+                //чисто вывод
                 {
-                    for (int j = 0; j < Razryd; j++)
+                    for (int i = 0; i < Razryd; i++)
                     {
-                        Console.Write(Vremynka[i, j] + "\t");
+                        int count = 0;
+                        for (int j = 0; j < Razryd; j++)
+                        {
+                            count += Vremynka[i, j];
+                            Console.Write(Vremynka[i, j] + "\t");
+                        }
+                        Console.Write("\t" + count);
+                        Console.WriteLine();
                     }
-                    Console.WriteLine();    
+                    Console.WriteLine();
+                    for (int i = 0; i < Razryd; i++)
+                    {
+                        int count = 0;
+                        for (int j = 0; j < Razryd; j++)
+                        {
+                            count += Vremynka[j, i];
+                        }
+                        Console.Write(count + "\t");
+                    }
+                    Console.WriteLine();
+                }
+
+                //================
+                {
+                  /* for (int i = 0; i < Razryd; i++)
+                    {
+                        int count = 0;
+                        for (int j = 0; j < Razryd; j++)
+                        {
+                            count += Vremynka[i, j];
+                            Console.Write(Vremynka[i, j] + "\t");
+                        }
+                        Console.Write("\t" + count);
+                        Console.WriteLine();
+                    }
+                    Console.WriteLine();*/
+                    for (int i = 0; i < Razryd; i++)
+                    {
+                        int count = 0;
+                        for (int j = 0; j < Razryd; j++)
+                        {
+                            count += Vremynka[j, i];
+                        }
+                        //Console.Write(count + "\t");
+                        if (count == 1)
+                        {
+                            //Console.WriteLine("djkhfjsahvjashjasghjfba");
+                            for (int j = 0; j < Razryd; j++)
+                            {
+                                if (Vremynka[j, i] == 1)
+                                {
+                                    //Udalenie(indstr, i, j + 1);
+                                    VuvodVKonechnoeZnach(indstr, j, i + 1);
+                                }
+                            }
+                        }
+                    }
+                    Console.WriteLine();
                 }
             }
             void SostoynieStolb(int indstolb)
-            { 
+            {
+                Console.WriteLine("Состояние столб");
+
                 var Vremynka = new int[Razryd, Razryd];
                 for (int i = 0; i < Razryd; i++)
                 {
@@ -204,11 +273,16 @@ namespace ConsoleApp1
                     Console.WriteLine();
                 }
             }
-            SostoynieStolb(0);
+           // SostoynieStolb(0);
+            SostoynieStr(0);
+            VuvodSvodki();
             SostoynieStr(0);
             Console.WriteLine("Конец!");
             Console.ReadLine();
         }
     }
 }
+/*реализовано единственное место в строке
+ 
+ */
 
